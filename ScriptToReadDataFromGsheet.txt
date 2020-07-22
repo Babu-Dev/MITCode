@@ -1,0 +1,22 @@
+const SHEET_URL = "";
+const SHEET_NAME = "";
+
+const doGet = () => {
+  const sheet = SpreadsheetApp.openByUrl(SHEET_URL).getSheetByName(SHEET_NAME);  
+  const noOfRows = sheet.getLastRow(); //returns last row no  : ex - if 5 rows then retuen value will be 5.0
+  const rows = noOfRows.toString().replace(".0","").toString(); //changing the format 5.0 to 5
+  Logger.log(rows); // adds rows value to log
+  const randomNum = Math.floor(Math.random() * Math.floor(rows)).toString().replace(".0",""); // generates random value between 0 and rows
+  Logger.log(randomNum); //adds random value to log
+  var rowNum = Number(randomNum);
+  Logger.log(rowNum);
+  if(rowNum === 0){
+     rowNum = rowNum + 1;
+  }  
+  const value = sheet.getRange(rowNum, 1).getValue();
+  Logger.log(value); //adds random fetch value to Logger
+  const output = [];
+  output.push([value]); //push random fecth data to output
+  const json = JSON.stringify(output); //converting to JSON type
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.TEXT); // return value for GET method call
+}
